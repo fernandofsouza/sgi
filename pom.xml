@@ -116,17 +116,18 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <excludes>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-maven-plugin</artifactId>
+    <configuration>
+        <mainClass>br.gov.sgi.SgiApplication</mainClass>
+        <excludes>
             <exclude>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
             </exclude>
-          </excludes>
-        </configuration>
-      </plugin>
+        </excludes>
+    </configuration>
+</plugin>
     </plugins>
   </build>
 </project>
