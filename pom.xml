@@ -57,13 +57,7 @@
       <artifactId>flyway-core</artifactId>
     </dependency>
 
-    <!-- Flyway PostgreSQL (necessário para Flyway 10+) -->
-    <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-database-postgresql</artifactId>
-      <version>10.10.0</version>
-    </dependency>
-
+    
     <!-- Flyway SQL Server — mantido para ambiente ARO -->
     <dependency>
       <groupId>org.flywaydb</groupId>
