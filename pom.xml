@@ -18,8 +18,7 @@
 
   <properties>
     <java.version>21</java.version>
-    <azure-ad.version>3.14.0</azure-ad.version>
-  </properties>
+    </properties>
 
   <dependencies>
     <!-- Web -->
@@ -80,11 +79,7 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-starter-active-directory</artifactId>
-      <version>${azure-ad.version}</version>
-    </dependency>
+    
 
     <!-- Validation -->
     <dependency>
