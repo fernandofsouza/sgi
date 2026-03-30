@@ -1,0 +1,27 @@
+# Profile de teste — usa H2 em memória no lugar do SQL Server/PostgreSQL
+spring:
+  datasource:
+    url: jdbc:h2:mem:sgi_test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop   # H2 recria o schema a cada execução de teste
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+  flyway:
+    enabled: false            # Desabilita Flyway nos testes — Hibernate cria o schema
+
+  cloud:
+    azure:
+      active-directory:
+        enabled: false
+
+sgi:
+  cors:
+    allowed-origins: "*"
