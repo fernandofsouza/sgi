@@ -22,6 +22,5 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 @ActiveProfiles("integration-test")
 @Import(IntegrationTestConfig.class)
-//classe principal de teste
 public abstract class AbstractIntegrationTest {
 }
