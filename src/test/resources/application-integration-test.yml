@@ -1,0 +1,49 @@
+# ============================================================
+# Profile: integration-test
+# Requer as variáveis de ambiente do add-on Heroku Postgres:
+#   JDBC_DATABASE_URL      → jdbc:postgresql://host:5432/banco
+#   JDBC_DATABASE_USERNAME → usuário do banco
+#   JDBC_DATABASE_PASSWORD → senha do banco
+#
+# Local: exporte essas vars apontando para um PostgreSQL local.
+# Heroku CI: o add-on as injeta automaticamente no pipeline.
+# ============================================================
+
+spring:
+
+  datasource:
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate          # Flyway gerencia o schema
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    clean-disabled: false         # Permite flyway.clean() antes de cada execução de testes
+
+  cloud:
+    azure:
+      active-directory:
+        enabled: false            # Sem autenticação nos testes de integração
+
+sgi:
+  cors:
+    allowed-origins: "*"
+
+logging:
+  level:
+    br.gov.sgi: DEBUG
+    org.flywaydb: INFO

@@ -108,18 +108,84 @@
   <build>
     <plugins>
       <plugin>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-maven-plugin</artifactId>
-    <configuration>
-        <mainClass>br.gov.sgi.SgiApplication</mainClass>
-        <excludes>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>br.gov.sgi.SgiApplication</mainClass>
+          <excludes>
             <exclude>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
             </exclude>
-        </excludes>
-    </configuration>
-</plugin>
+          </excludes>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <!--
+      Perfil de testes de integração contra PostgreSQL real (Heroku add-on).
+      Requer as variáveis de ambiente:
+        JDBC_DATABASE_URL, JDBC_DATABASE_USERNAME, JDBC_DATABASE_PASSWORD
+
+      Uso:
+        mvn verify -P integration-test
+
+      Os arquivos *Test.java são excluídos da compilação porque referenciam
+      classes ainda não implementadas. Apenas *IT.java são compilados e executados.
+    -->
+    <profile>
+      <id>integration-test</id>
+      <properties>
+        <maven.test.skip>false</maven.test.skip>
+      </properties>
+      <build>
+        <plugins>
+          <!-- Exclui *Test.java da compilação (classes não implementadas ainda) -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <testExcludes>
+                <testExclude>**/*Test.java</testExclude>
+              </testExcludes>
+            </configuration>
+          </plugin>
+
+          <!-- Surefire: pula testes unitários neste perfil -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+
+          <!-- Failsafe: executa apenas *IT.java na fase verify -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/*IT.java</include>
+              </includes>
+              <systemPropertyVariables>
+                <spring.profiles.active>integration-test</spring.profiles.active>
+              </systemPropertyVariables>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>

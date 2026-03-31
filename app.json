@@ -1,0 +1,17 @@
+{
+  "name": "SGI Backend",
+  "description": "Sistema de Gestão de Indicadores — API Spring Boot",
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "environments": {
+    "test": {
+      "addons": [
+        "heroku-postgresql"
+      ],
+      "scripts": {
+        "test": "mvn verify -P integration-test"
+      }
+    }
+  }
+}
