@@ -5,20 +5,36 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-# Build (tests currently skipped in pom.xml)
+# Build (tests skipped por padrão)
 mvn clean package
 
 # Run locally (requires application-local.yml with DB config)
 mvn spring-boot:run
 
-# Run all tests (override the skip flag)
+# Testes unitários (H2 em memória)
 mvn test -DskipTests=false
 
-# Run a single test class
-mvn test -Dtest=IndicatorServiceTest -DskipTests=false
+# Testes de integração contra PostgreSQL real (Heroku add-on ou local)
+export JDBC_DATABASE_URL=jdbc:postgresql://localhost:5432/sgi_test
+export JDBC_DATABASE_USERNAME=postgres
+export JDBC_DATABASE_PASSWORD=senha
+mvn verify -P integration-test
+
+# Um único teste de integração
+mvn verify -P integration-test -Dit.test=IndicadorRepositoryIT
+
+# Relatórios gerados após mvn verify -P integration-test:
+#   target/site/jacoco-it/index.html  → cobertura de código (JaCoCo)
+#   target/failsafe-reports/          → resultado dos testes (XML/TXT)
 ```
 
-> Note: `pom.xml` has `<maven.test.skip>true</maven.test.skip>` — always pass `-DskipTests=false` to actually run tests.
+> `pom.xml` tem `<maven.test.skip>true</maven.test.skip>` por padrão — use `-DskipTests=false` para unitários ou `-P integration-test` para integração.
+
+**Testes de integração — convenções:**
+- Arquivos nomeados `*IT.java` (ex: `IndicatorRepositoryIT.java`)
+- Estendem `AbstractIntegrationTest` (aplica `@SpringBootTest` + perfil `integration-test`)
+- O Flyway executa `clean()` + `migrate()` ao subir o contexto Spring (schema sempre limpo)
+- Métodos que alteram dados devem usar `@Transactional` para rollback automático
 
 ## Architecture
 
@@ -37,6 +53,7 @@ Layered architecture: `controller → service → repository → entity`, plus `
 **Profiles:**
 - `heroku` — activated by `Procfile` on deploy; reads env vars, HikariCP max 5 connections, Flyway auto-runs
 - `test` — loaded via `@ActiveProfiles("test")` in tests; uses H2, all endpoints public, CORS open
+- `integration-test` — testes de integração contra PostgreSQL real; requer `JDBC_DATABASE_*` env vars
 
 **Security:** Spring Security with stateless JWT sessions. Optional Entra ID (Azure AD) OAuth2 integration controlled by the `ENTRA_ID_ENABLED` env var. CORS origins configured via `CORS_ALLOWED_ORIGINS`.
 
