@@ -158,7 +158,7 @@ INSERT INTO team_members (id, name, role, email) VALUES
 ('2','Carlos Mendes',  'Tech Lead',        'carlos@sgi.gov.br'),
 ('3','Beatriz Lima',   'Designer',         'beatriz@sgi.gov.br'),
 ('4','Diego Rocha',    'Developer',        'diego@sgi.gov.br'),
-('5','Fernanda Costa', 'QA Lead',          'fernanda@sgi.gov.br');
+('5','Fernanda Costa', 'QA Lead',          'fernando@sgi.gov.br');
 
 -- Índices de performance
 CREATE INDEX ix_indicators_parent_id       ON indicators(parent_id);
