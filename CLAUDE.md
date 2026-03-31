@@ -22,6 +22,10 @@ mvn verify -P integration-test
 
 # Um único teste de integração
 mvn verify -P integration-test -Dit.test=IndicadorRepositoryIT
+
+# Relatórios gerados após mvn verify -P integration-test:
+#   target/site/jacoco-it/index.html  → cobertura de código (JaCoCo)
+#   target/failsafe-reports/          → resultado dos testes (XML/TXT)
 ```
 
 > `pom.xml` tem `<maven.test.skip>true</maven.test.skip>` por padrão — use `-DskipTests=false` para unitários ou `-P integration-test` para integração.
