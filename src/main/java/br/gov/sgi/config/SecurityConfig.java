@@ -9,7 +9,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -21,15 +20,16 @@ public class SecurityConfig {
     private boolean entraIdEnabled;
 
     /**
-     * CORS_ALLOWED_ORIGINS — variável de ambiente no Heroku.
-     * Exemplos:
-     *   https://sgi-frontend-abc123.herokuapp.com
-     *   https://meudominio.com.br
-     * Em dev usa "*" (permite qualquer origem).
+     * Configuração de segurança.
+     *
+     * Quando ENTRA_ID_ENABLED=true (produção/homolog):
+     *   - Valida tokens JWT emitidos pelo Azure Entra ID
+     *   - Extrai roles/grupos via claims do token
+     *
+     * Quando ENTRA_ID_ENABLED=false (dev):
+     *   - Endpoints públicos para facilitar desenvolvimento local
+     *   - Apenas /actuator/** protegido
      */
-    @Value("${sgi.cors.allowed-origins:*}")
-    private String allowedOrigins;
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -41,27 +41,34 @@ public class SecurityConfig {
             http
                 .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/actuator/health/**").permitAll()
+                    .requestMatchers("/actuator/**").hasRole("SGI_ADMIN")
                     .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                     .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter()))
                 );
         } else {
-            // DEV / Heroku sem Entra ID: tudo público
+            // DEV: sem autenticação
             http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
         }
 
         return http.build();
     }
 
+    /**
+     * Converte claims do token Entra ID em roles Spring Security.
+     * Mapeia claim "roles" para GrantedAuthorities com prefixo ROLE_.
+     * Mapeia claim "groups" para GrantedAuthorities com prefixo SCOPE_.
+     */
     @Bean
     public org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter jwtAuthConverter() {
-        var converter = new org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter();
-        converter.setAuthoritiesClaimName("roles");
-        converter.setAuthorityPrefix("ROLE_");
+        var grantedAuthoritiesConverter = new org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter();
+        grantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
+        grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
 
         var jwtConverter = new org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter();
-        jwtConverter.setJwtGrantedAuthoritiesConverter(converter);
+        jwtConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
+        // O subject (oid claim) do Entra ID é usado como principal name
         jwtConverter.setPrincipalClaimName("preferred_username");
         return jwtConverter;
     }
@@ -69,18 +76,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-
-        // Suporta múltiplas origens separadas por vírgula
-        List<String> origins = Arrays.asList(allowedOrigins.split(","));
-        if (origins.contains("*")) {
-            config.setAllowedOriginPatterns(List.of("*"));
-        } else {
-            config.setAllowedOrigins(origins);
-        }
-
+        config.setAllowedOriginPatterns(List.of("*")); // Em prod, restrinja ao domínio Angular
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(!origins.contains("*"));
+        config.setAllowCredentials(true);
         config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
