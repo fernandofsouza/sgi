@@ -17,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
  *
  * Variáveis de ambiente necessárias (localmente ou no Heroku CI):
  *   JDBC_DATABASE_URL, JDBC_DATABASE_USERNAME, JDBC_DATABASE_PASSWORD
+ * 
  */
 @SpringBootTest
 @ActiveProfiles("integration-test")
