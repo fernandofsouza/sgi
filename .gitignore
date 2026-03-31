@@ -1,0 +1,84 @@
+# ============================================================
+# .gitignore — Backend SGI (Spring Boot + Maven)
+# ============================================================
+
+# -----------------------------------------------
+# Maven — build output (gerado automaticamente)
+# -----------------------------------------------
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# -----------------------------------------------
+# Spring Boot
+# -----------------------------------------------
+spring-shell.log
+
+# -----------------------------------------------
+# Arquivos de ambiente e configuração local
+# -----------------------------------------------
+application-local.yml
+application-local.properties
+*.env
+.env
+.env.*
+
+# -----------------------------------------------
+# IDEs — IntelliJ IDEA
+# -----------------------------------------------
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# IDEs — Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# IDEs — VS Code
+.vscode/
+
+# IDEs — NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# -----------------------------------------------
+# Sistema Operacional
+# -----------------------------------------------
+.DS_Store
+Thumbs.db
+*.class
+
+# -----------------------------------------------
+# Logs
+# -----------------------------------------------
+*.log
+logs/
+
+# -----------------------------------------------
+# Arquivos temporários
+# -----------------------------------------------
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+
+# -----------------------------------------------
+# Heroku
+# -----------------------------------------------
+.heroku/
