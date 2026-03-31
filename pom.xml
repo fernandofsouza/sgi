@@ -175,6 +175,8 @@
               </systemPropertyVariables>
               <!-- Passa o agente JaCoCo para a JVM dos testes de integração -->
               <argLine>@{jacoco.failsafe.argLine}</argLine>
+              <!-- Heroku CI lê XMLs de test-results/ para exibir na aba Tests -->
+              <reportsDirectory>${project.basedir}/test-results</reportsDirectory>
             </configuration>
             <executions>
               <execution>
