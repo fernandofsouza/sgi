@@ -120,6 +120,25 @@
           </excludes>
         </configuration>
       </plugin>
+
+      <!--
+        Registra o processador de anotações do Lombok explicitamente.
+        Necessário para que @Data, @Slf4j, @Builder etc. funcionem
+        em ambientes como o Heroku que não herdam o classpath de IDEs.
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
