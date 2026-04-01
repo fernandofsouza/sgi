@@ -12,9 +12,11 @@
 spring:
 
   datasource:
-    url: ${JDBC_DATABASE_URL}
-    username: ${JDBC_DATABASE_USERNAME}
-    password: ${JDBC_DATABASE_PASSWORD}
+    # JDBC_DATABASE_URL é injetado pelo Java Buildpack a partir de DATABASE_URL.
+    # Fallback para localhost permite rodar os testes localmente sem configurar vars.
+    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/sgi_test}
+    username: ${JDBC_DATABASE_USERNAME:postgres}
+    password: ${JDBC_DATABASE_PASSWORD:}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 5

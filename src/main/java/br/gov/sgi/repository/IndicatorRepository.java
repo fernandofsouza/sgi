@@ -11,15 +11,26 @@ import java.util.List;
 @Repository
 public interface IndicatorRepository extends JpaRepository<Indicator, String> {
 
-    @Query("""
-        SELECT i FROM Indicator i
-        LEFT JOIN FETCH i.assignees
-        WHERE (:year IS NULL OR i.referenceYear = :year)
-          AND (:range IS NULL OR i.referenceRange = :range)
-          AND (:label IS NULL OR i.referenceLabel = :label)
-          AND (:creationStatus IS NULL OR i.creationStatus = :creationStatus)
-          AND (:progressStatus IS NULL OR i.progressStatus = :progressStatus)
-        """)
+    @Query(
+        value = """
+            SELECT i FROM Indicator i
+            LEFT JOIN FETCH i.assignees
+            WHERE (:year IS NULL OR i.referenceYear = :year)
+              AND (:range IS NULL OR i.referenceRange = :range)
+              AND (:label IS NULL OR i.referenceLabel = :label)
+              AND (:creationStatus IS NULL OR i.creationStatus = :creationStatus)
+              AND (:progressStatus IS NULL OR i.progressStatus = :progressStatus)
+            """,
+        countQuery = """
+            SELECT COUNT(DISTINCT i) FROM Indicator i
+            LEFT JOIN i.assignees
+            WHERE (:year IS NULL OR i.referenceYear = :year)
+              AND (:range IS NULL OR i.referenceRange = :range)
+              AND (:label IS NULL OR i.referenceLabel = :label)
+              AND (:creationStatus IS NULL OR i.creationStatus = :creationStatus)
+              AND (:progressStatus IS NULL OR i.progressStatus = :progressStatus)
+            """
+    )
     Page<Indicator> findWithFilters(
         @Param("year")           Integer year,
         @Param("range")          String range,

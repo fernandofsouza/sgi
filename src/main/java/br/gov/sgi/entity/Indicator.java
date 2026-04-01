@@ -21,7 +21,7 @@ public class Indicator {
     @Column(name = "title", nullable = false, length = 500)
     private String title;
 
-    @Column(name = "description", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "pdg_id", length = 100)
@@ -54,7 +54,7 @@ public class Indicator {
     @JoinColumn(name = "validator_id")
     private TeamMember validator;
 
-    @Column(name = "observation", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "observation", columnDefinition = "TEXT")
     private String observation;
 
     @Column(name = "reference_year", nullable = false)
