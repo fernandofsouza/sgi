@@ -20,7 +20,7 @@ class ActuatorHealthIT extends AbstractIntegrationTest {
     @Test
     @DisplayName("GET /actuator/health deve retornar 200 com status UP")
     void deveRetornarStatusUp() throws Exception {
-        mockMvc.perform(get("/actuator/health"))
+        mockMvc.perform(get("/actuator/health").accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.status").value("UP"));
@@ -29,7 +29,7 @@ class ActuatorHealthIT extends AbstractIntegrationTest {
     @Test
     @DisplayName("GET /actuator/health deve indicar banco de dados UP")
     void deveIndicarBancoDeDadosUp() throws Exception {
-        mockMvc.perform(get("/actuator/health"))
+        mockMvc.perform(get("/actuator/health").accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.components.db.status").value("UP"));
     }
