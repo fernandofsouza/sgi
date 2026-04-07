@@ -13,7 +13,7 @@ public class SystemConfig {
     @Column(name = "config_key", length = 100)
     private String configKey;
 
-    @Column(name = "config_value", columnDefinition = "NVARCHAR(MAX)", nullable = false)
+    @Column(name = "config_value", columnDefinition = "TEXT", nullable = false)
     private String configValue;
 
     @Column(name = "updated_at", nullable = false)
