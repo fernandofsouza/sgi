@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -n \"NVARCHAR\" src/main/java/br/gov/sgi/entity/*.java)"
+    ]
+  }
+}
