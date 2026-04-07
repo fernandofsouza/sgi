@@ -130,7 +130,6 @@ public class IndicatorService {
             embId.setCriterionId(dto.getCriterionId());
             assessment.setId(embId);
             assessment.setIndicator(indicator);
-            assessment.setCriterionId(dto.getCriterionId());
             assessment.setScore(dto.getScore());
             indicator.getRelevanceAssessments().add(assessment);
         });
@@ -307,7 +306,7 @@ public class IndicatorService {
                 .assignees(i.getAssignees().stream().map(this::toMemberDTO).collect(Collectors.toList()))
                 .checkIns(i.getCheckIns().stream().map(this::toCheckInDTO).collect(Collectors.toList()))
                 .relevanceAssessments(i.getRelevanceAssessments().stream()
-                        .map(r -> new RelevanceAssessmentDTO(r.getCriterionId(), r.getScore()))
+                        .map(r -> new RelevanceAssessmentDTO(r.getId().getCriterionId(), r.getScore()))
                         .collect(Collectors.toList()))
                 .createdAt(i.getCreatedAt())
                 .updatedAt(i.getUpdatedAt())

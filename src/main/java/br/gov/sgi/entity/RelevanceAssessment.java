@@ -16,9 +16,6 @@ public class RelevanceAssessment {
     @JoinColumn(name = "indicator_id")
     private Indicator indicator;
 
-    @Column(name = "criterion_id", insertable = false, updatable = false, length = 50)
-    private String criterionId;
-
     @Column(name = "score", nullable = false)
     private Integer score;
 }
