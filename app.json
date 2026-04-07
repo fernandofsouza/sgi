@@ -10,7 +10,7 @@
         "heroku-postgresql"
       ],
       "scripts": {
-        "test": "mvn verify -P integration-test"
+        "test": "bash bin/ci_test.sh"
       }
     }
   }
