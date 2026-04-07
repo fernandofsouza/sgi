@@ -11,7 +11,13 @@
       ],
       "scripts": {
         "test": "bash bin/ci_test.sh"
+      },
+      "dynos": [
+      {
+        "type": "standard-2x",
+        "quantity": 1
       }
+      ]
     }
   }
 }
