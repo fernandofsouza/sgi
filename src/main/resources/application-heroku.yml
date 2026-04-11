@@ -62,6 +62,16 @@ sgi:
     # que o Spring Boot tente conectar ao OIDC endpoint na inicialização.
     issuer-uri: ${JWT_ISSUER_URI:}
 
+# ── Swagger / OpenAPI ────────────────────────────────────────────────────────
+# UI: https://<app>.herokuapp.com/api/swagger-ui.html
+# JSON: https://<app>.herokuapp.com/api/v3/api-docs
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+  api-docs:
+    path: /v3/api-docs
+
 # ── Actuator ─────────────────────────────────────────────────────────────────
 management:
   endpoints:

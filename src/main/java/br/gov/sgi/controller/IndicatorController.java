@@ -2,6 +2,7 @@ package br.gov.sgi.controller;
 
 import br.gov.sgi.dto.*;
 import br.gov.sgi.service.IndicatorService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -11,11 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-/**
- * modelo - indicadores
- * @param id
- * @return
- */ 
+
+@Tag(name = "Indicadores")
 @RestController
 @RequestMapping("/indicators")
 @RequiredArgsConstructor
