@@ -6,23 +6,8 @@
 spring:
 
   # ── Banco de dados ──────────────────────────────────────────────────────────
-  # O Heroku Postgres injeta DATABASE_URL no formato:
-  #   postgres://usuario:senha@host:5432/banco
-  # O Spring Boot não lê esse formato diretamente; usamos a variável
-  # SPRING_DATASOURCE_URL que o Heroku também expõe no formato JDBC,
-  # ou configuramos a conversão abaixo.
-  datasource:
-    # Heroku expõe JDBC_DATABASE_URL automaticamente quando o add-on Postgres
-    # está provisionado. Essa é a forma mais simples de conectar.
-    url: ${JDBC_DATABASE_URL}
-    username: ${JDBC_DATABASE_USERNAME}
-    password: ${JDBC_DATABASE_PASSWORD}
-    driver-class-name: org.postgresql.Driver
-    hikari:
-      maximum-pool-size: 5          # Plano gratuito Heroku Postgres tem limite de 20 conexões
-      minimum-idle: 1
-      connection-timeout: 30000
-      idle-timeout: 600000
+  # DataSource configurado programaticamente em HerokuDataSourceConfig,
+  # que lê e parseia a variável DATABASE_URL injetada pelo add-on Heroku Postgres.
 
   # ── JPA / Hibernate ─────────────────────────────────────────────────────────
   jpa:
