@@ -2,6 +2,7 @@ package br.gov.sgi.controller;
 
 import br.gov.sgi.dto.TeamMemberDTO;
 import br.gov.sgi.service.TeamMemberService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+@Tag(name = "Membros da Equipe")
 @RestController
 @RequestMapping("/team-members")
 @RequiredArgsConstructor

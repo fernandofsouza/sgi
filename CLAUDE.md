@@ -59,6 +59,24 @@ Layered architecture: `controller → service → repository → entity`, plus `
 
 **API prefix:** All REST endpoints are under `/api`.
 
+## Swagger / OpenAPI
+
+Dependência: `springdoc-openapi-starter-webmvc-ui:2.3.0` (compatível com Spring Boot 3.x).
+
+**URLs (contexto `/api`):**
+- Swagger UI → `https://<app>.herokuapp.com/api/swagger-ui.html`
+- OpenAPI JSON → `https://<app>.herokuapp.com/api/v3/api-docs`
+
+**Arquivos envolvidos:**
+- `config/OpenApiConfig.java` — título, versão e lista de tags da API
+- `config/SecurityConfig.java` — libera `/swagger-ui/**` e `/v3/api-docs/**` mesmo com `ENTRA_ID_ENABLED=true`
+- `application-heroku.yml` — seção `springdoc` com paths e ordenação por método
+- Cada `*Controller.java` — anotado com `@Tag(name = "...")` para agrupar endpoints
+
+**Para adicionar um novo controller:**
+1. Anote a classe com `@Tag(name = "Nome do Grupo")`
+2. Registre o mesmo nome em `OpenApiConfig.openAPI().tags(...)` com a descrição
+
 ## Heroku Deployment
 
 ```bash
@@ -66,4 +84,4 @@ git push heroku <branch>:main
 heroku logs --tail
 ```
 
-Required config vars: `JDBC_DATABASE_URL`, `JDBC_DATABASE_USERNAME`, `JDBC_DATABASE_PASSWORD`, `CORS_ALLOWED_ORIGINS`. For Entra ID: `ENTRA_ID_ENABLED=true`, `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`, `AZURE_APP_ID_URI`, `JWT_ISSUER_URI`.
+Required config vars: `DATABASE_URL` (injetado automaticamente pelo add-on Heroku Postgres), `CORS_ALLOWED_ORIGINS`. For Entra ID: `ENTRA_ID_ENABLED=true`, `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`, `AZURE_APP_ID_URI`, `JWT_ISSUER_URI`.
