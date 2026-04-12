@@ -3,6 +3,7 @@ package br.gov.sgi.config;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,12 @@ public class GlobalExceptionHandler {
                 ));
         return ResponseEntity.badRequest()
                 .body(new ErrorResponse(LocalDateTime.now(), 400, "Validation Error", errors));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ErrorResponse(LocalDateTime.now(), 403, "Forbidden", "Acesso negado."));
     }
 
     @ExceptionHandler(Exception.class)
