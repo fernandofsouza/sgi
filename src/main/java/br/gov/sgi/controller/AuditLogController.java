@@ -3,12 +3,14 @@ package br.gov.sgi.controller;
 import br.gov.sgi.dto.AuditLogDTO;
 import br.gov.sgi.entity.AuditLog;
 import br.gov.sgi.service.AuditLogService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Audit Log")
 @RestController
 @RequestMapping("/audit-log")
 @RequiredArgsConstructor
