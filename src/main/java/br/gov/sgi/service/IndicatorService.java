@@ -205,6 +205,13 @@ public class IndicatorService {
         if (dto.getReferenceRange() != null) ind.setReferenceRange(dto.getReferenceRange());
         if (dto.getReferenceLabel() != null) ind.setReferenceLabel(dto.getReferenceLabel());
 
+        if (dto.getParentId() != null) {
+            if (dto.getParentId().isBlank()) {
+                ind.setParent(null);
+            } else {
+                indicatorRepo.findById(dto.getParentId()).ifPresent(ind::setParent);
+            }
+        }
         if (dto.getEditorId()    != null) teamMemberService.findEntityByIdOptional(dto.getEditorId()).ifPresent(ind::setEditor);
         if (dto.getValidatorId() != null) teamMemberService.findEntityByIdOptional(dto.getValidatorId()).ifPresent(ind::setValidator);
 

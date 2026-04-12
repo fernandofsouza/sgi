@@ -14,6 +14,7 @@ public class UpdateIndicatorDTO {
     private String progressStatus;
     @Min(0) @Max(100) private Integer progress;
     private LocalDate targetDate;
+    private String parentId;
     private String editorId;
     private String validatorId;
     private String observation;
